@@ -1,0 +1,5 @@
+PassengerAppRoot "/home/cp1288777p05/app_api"
+PassengerBaseURI "/."
+PassengerNodejs "/home/cp1288777p05/nodevenv/app_api/10/bin/node"
+PassengerAppType node
+PassengerStartupFile app.js
