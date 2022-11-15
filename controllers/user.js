@@ -35,8 +35,8 @@ const viewableAttributes = [
 exports.createUser = async (req, res) => {
   // Make a copy of the new account
   let accountData = { ...req.body };
-  const {email, password, firstName,lastName,address,image} = req.body;
-  console.log("test",email,password);
+  const {Email, Password, FirstName,LastName,Address,Image} = req.body;
+  console.log("test",Email,Password);
   try {
     const auth = admin.auth();
     console.log("auth");
@@ -57,11 +57,11 @@ exports.createUser = async (req, res) => {
         // create user in firebase with details
         const db = admin.firestore();
         let userRecord = {
-            firstName,
-            lastName,
-            email,
-            address,
-            image,
+            firstName: FirstName,
+            lastName:LastName ,
+            email: Email,
+            address: Address,
+            image: Image,
             status: 1,
             createdDate: Date.now(),
             editedDate: Date.now()
