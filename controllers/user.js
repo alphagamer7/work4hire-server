@@ -41,8 +41,8 @@ exports.createUser = async (req, res) => {
     const auth = admin.auth();
     console.log("auth");
     auth.createUser({
-      email,
-      password
+      email: Email,
+      password: Password
     })
       .then((user) => {
         console.log("user", user);
