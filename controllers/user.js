@@ -131,7 +131,7 @@ exports.Login = async (req, res) => {
 
     const user = await admin.auth().getUser(data.user.uid);
 
-    const refreshToken = data.user.toJSON()?.stsTokenManager?.refreshToken;
+    const refreshToken = data.user.toJSON().stsTokenManager.refreshToken;
 
     db.collection("users").doc(email).get()
     .then((doc) => {
