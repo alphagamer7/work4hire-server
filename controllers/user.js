@@ -46,15 +46,6 @@ exports.createUser = async (req, res) => {
     })
       .then((user) => {
         console.log("user", user);
-        // FirstName = firstname;
-        // LastName = lastname;
-        // Email = email;
-        // Address = address;
-        // Image = image;
-        // Status = status;
-        // CreatedDate = createdDate;
-        // EditedDate = editedDate;
-        // create user in firebase with details
         const db = admin.firestore();
         let userRecord = {
             firstName,
@@ -94,30 +85,46 @@ exports.createUser = async (req, res) => {
   }
 };
 
-// exports.getUser = async (req, res) => {
-//   // Params
-//   const id = req.params.id;
+exports.Login = async (req, res) => {
 
-//   try {
-//     // Find By Id
-//     if (id !== null) {
-//       const account = await Account.findByPk(id, {
-//         attributes: viewableAttributes,
-//       });
-//       if (account) {
-//         return res.status(200).json(account.get({ plain: true }));
-//       }
-//     }
+  const {email, password} = req.body;
+  console.log("test",email,password);
+  try {
+    const auth = admin.auth();
+    auth.signInWithEmailAndPassword(email, password).then((userCredential)=>{
+      console.log("userCredential",userCredential);
+    })
+  }catch (err) {
+    logger.error({
+      message: 'Error on account.controller (createAccount):',
+      error: err,
+    });
 
-//     return res.status(404).json({ error: 'data not found' });
-//   } catch (err) {
-//     logger.error({
-//       message: 'Error on account.controller (readAccount):',
-//       error: err,
-//     });
-//     return res.status(500).json({ err, message: err.toString() });
-//   }
-// };
+    return res.status(500).json({ err, message: err.toString() });
+  }
+  // // Params
+  // const id = req.params.id;
+
+  // try {
+  //   // Find By Id
+  //   if (id !== null) {
+  //     const account = await Account.findByPk(id, {
+  //       attributes: viewableAttributes,
+  //     });
+  //     if (account) {
+  //       return res.status(200).json(account.get({ plain: true }));
+  //     }
+  //   }
+
+  //   return res.status(404).json({ error: 'data not found' });
+  // } catch (err) {
+  //   logger.error({
+  //     message: 'Error on account.controller (readAccount):',
+  //     error: err,
+  //   });
+  //   return res.status(500).json({ err, message: err.toString() });
+  // }
+};
 
 // exports.getUsers = async (req, res) => {
 //   // Query Variable
