@@ -1,6 +1,7 @@
 const logger = require('../utils/logger');
 const User = require('../models/user');
 const admin = require("firebase-admin");
+const firebase = require("firebase");
 const serviceAccount = require("./work4hire-8a56a-firebase-adminsdk-mt8sw-4aa7a2ff05");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -85,45 +86,61 @@ exports.createUser = async (req, res) => {
   }
 };
 
+// const login = async (request, response) => {
+//   try {
+//     const { email, password } = request.body;
+
+//     const data = await firebase
+//       .auth()
+//       .signInWithEmailAndPassword(email, password);
+
+//     const token = await data.user.getIdToken();
+
+//     const user = await admin.auth().getUser(data.user.uid);
+
+//     const refreshToken = data.user.toJSON()?.stsTokenManager?.refreshToken;
+
+//     return response.status(200).json({ token, user, refreshToken });
+//   } catch (error) {
+//     console.log(error);
+//     return response.status(500).json({ error, message: error.toString() });
+//   }
+// };
+
 exports.Login = async (req, res) => {
 
-  const {email, password} = req.body;
-  console.log("test",email,password);
-  try {
-    const auth = admin.auth();
-    auth.signInWithEmailAndPassword(email, password).then((userCredential)=>{
-      console.log("userCredential",userCredential);
+    try {
+    const { email, password } = request.body;
+
+    const data = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
+
+    const token = await data.user.getIdToken();
+
+    const user = await admin.auth().getUser(data.user.uid);
+
+    const refreshToken = data.user.toJSON()?.stsTokenManager?.refreshToken;
+
+    db.collection("users").doc(email).get()
+    .then((doc) => {
+      let userDetails;
+        if (doc.exists) {
+          userDetails = doc.data();
+          console.log("Document data:", userDetails);
+        }
+        console.log("user data", user);
+        return response.status(200).json({ token, userDetails, user, refreshToken });
     })
-  }catch (err) {
-    logger.error({
-      message: 'Error on account.controller (createAccount):',
-      error: err,
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+        return response.status(500).json({ error, message: error.toString() });
     });
 
-    return res.status(500).json({ err, message: err.toString() });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error, message: error.toString() });
   }
-  // // Params
-  // const id = req.params.id;
-
-  // try {
-  //   // Find By Id
-  //   if (id !== null) {
-  //     const account = await Account.findByPk(id, {
-  //       attributes: viewableAttributes,
-  //     });
-  //     if (account) {
-  //       return res.status(200).json(account.get({ plain: true }));
-  //     }
-  //   }
-
-  //   return res.status(404).json({ error: 'data not found' });
-  // } catch (err) {
-  //   logger.error({
-  //     message: 'Error on account.controller (readAccount):',
-  //     error: err,
-  //   });
-  //   return res.status(500).json({ err, message: err.toString() });
-  // }
 };
 
 // exports.getUsers = async (req, res) => {
