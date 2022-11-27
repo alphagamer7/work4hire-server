@@ -4,16 +4,7 @@ const admin = require("firebase-admin");
 const firebase = require("firebase");
 const serviceAccount = require("./work4hire-8a56a-firebase-adminsdk-mt8sw-4aa7a2ff05");
 
-firebase.initializeApp({
-  databaseURL: "https://go-first-mvp-dev.firebaseio.com",
-  storageBucket: process.env.STORAGE_BUCKET,
-  apiKey: "AIzaSyB3NAEFWuXtyP7iGvxJCz8Bs7TA7EGFo7E",
-  authDomain: "work4hire-8a56a.firebaseapp.com",
-  projectId: "work4hire-8a56a",
-  storageBucket: "work4hire-8a56a.appspot.com",
-  messagingSenderId: "558258678885",
-  appId: "1:558258678885:web:631d004ff980d0c005aa8c"
-})
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   // databaseURL: "https://go-first-mvp-dev.firebaseio.com",
@@ -118,20 +109,21 @@ exports.createUser = async (req, res) => {
 //   }
 // };
 
-exports.Login = async (req, res) => {
+exports.Login = async (request, response) => {
 
     try {
     const { email, password } = request.body;
-
-    const data = await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password);
-
-    const token = await data.user.getIdToken();
-
-    const user = await admin.auth().getUser(data.user.uid);
-
-    const refreshToken = data.user.toJSON().stsTokenManager.refreshToken;
+    // firebase.initializeApp({
+    //   databaseURL: "https://go-first-mvp-dev.firebaseio.com",
+    //   storageBucket: process.env.STORAGE_BUCKET,
+    //   apiKey: "AIzaSyB3NAEFWuXtyP7iGvxJCz8Bs7TA7EGFo7E",
+    //   authDomain: "work4hire-8a56a.firebaseapp.com",
+    //   projectId: "work4hire-8a56a",
+    //   storageBucket: "work4hire-8a56a.appspot.com",
+    //   messagingSenderId: "558258678885",
+    //   appId: "1:558258678885:web:631d004ff980d0c005aa8c"
+    // })
+ 
 
     db.collection("users").doc(email).get()
     .then((doc) => {
