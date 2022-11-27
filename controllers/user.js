@@ -113,18 +113,7 @@ exports.Login = async (request, response) => {
 
     try {
     const { email, password } = request.body;
-    // firebase.initializeApp({
-    //   databaseURL: "https://go-first-mvp-dev.firebaseio.com",
-    //   storageBucket: process.env.STORAGE_BUCKET,
-    //   apiKey: "AIzaSyB3NAEFWuXtyP7iGvxJCz8Bs7TA7EGFo7E",
-    //   authDomain: "work4hire-8a56a.firebaseapp.com",
-    //   projectId: "work4hire-8a56a",
-    //   storageBucket: "work4hire-8a56a.appspot.com",
-    //   messagingSenderId: "558258678885",
-    //   appId: "1:558258678885:web:631d004ff980d0c005aa8c"
-    // })
- 
-
+    const db = admin.firestore();
     db.collection("users").doc(email).get()
     .then((doc) => {
       let userDetails;
@@ -132,8 +121,8 @@ exports.Login = async (request, response) => {
           userDetails = doc.data();
           console.log("Document data:", userDetails);
         }
-        console.log("user data", user);
-        return response.status(200).json({ token, userDetails, user, refreshToken });
+        console.log("user data", userDetails);
+        return response.status(200).json({ userDetails });
     })
     .catch((error) => {
         console.error("Error writing document: ", error);

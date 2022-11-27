@@ -18,6 +18,7 @@ const rootRoute = require('./routes/root');
 // Configs
 const app = express();
 const port = process.env.PORT || 5000;
+console.log("port",port);
 // MiddleWares
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
