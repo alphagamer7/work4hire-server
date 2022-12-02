@@ -110,8 +110,8 @@ exports.createUser = async (req, res) => {
 // };
 
 exports.Login = async (request, response) => {
-
     try {
+    console.log("Login");
     const { email, password } = request.body;
     const db = admin.firestore();
     db.collection("users").doc(email).get()
