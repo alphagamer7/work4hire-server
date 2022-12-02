@@ -1,6 +1,36 @@
 const logger = require('../utils/logger');
 const Project = require('../models/project');
 
+exports.createProjectOld = async (req, res) => {
+  // Make a copy of the req.body
+  let data = { ...req.body };
+
+  if (!data)
+    return res.status(400).json({
+      message: 'No data in the request',
+    });
+
+  try {
+    // Create record in db
+    const createdProject = await Project.create({
+      ...data,
+    });
+
+    if (createdProject) {
+      // Send Response to client
+      res.status(201).json({
+        createdProject: createdProject,
+      });
+    }
+  } catch (err) {
+    logger.error({
+      message: 'Error on Project.controller (createProject):',
+      error: err,
+    });
+    return res.status(500).json({ err, message: err.toString() });
+  }
+};
+
 exports.createProject = async (req, res) => {
   // Make a copy of the req.body
   let data = { ...req.body };
