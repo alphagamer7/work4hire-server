@@ -122,7 +122,7 @@ exports.Login = async (request, response) => {
           console.log("Document data:", userDetails);
         }
         console.log("user data", userDetails);
-        return response.status(200).json({ userDetails });
+        return response.status(200).json({ user: userDetails });
     })
     .catch((error) => {
         console.error("Error writing document: ", error);
