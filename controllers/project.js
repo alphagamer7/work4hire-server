@@ -255,7 +255,10 @@ exports.createFirebaseProject = async (req, res) => {
       description,
       image,
       latitude,
-      longitude
+      longitude,
+      status: 1,
+      createdDate: Date.now(),
+      editedDate: Date.now()
     }
     const db = admin.firestore();
     db.collection("jobs").add(job).then(()=>{
