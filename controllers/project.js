@@ -285,9 +285,10 @@ exports.getProjectList = async (req, res) => {
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
+            let jobDetails = doc.data();
+            jobDetails['projectId'] = doc.id;
             let job = {
-              id: doc.id,
-              data: doc.data()
+              data: jobDetails
             }
             jobs.push(job)
         });
