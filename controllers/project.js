@@ -2,14 +2,6 @@ const logger = require('../utils/logger');
 const Project = require('../models/project');
 
 const admin = require("firebase-admin");
-const firebase = require("firebase");
-const serviceAccount = require("./work4hire-8a56a-firebase-adminsdk-mt8sw-4aa7a2ff05");
-
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: "work4hire-8a56a.appspot.com"
-});
 
 exports.createProjectOld = async (req, res) => {
   // Make a copy of the req.body
