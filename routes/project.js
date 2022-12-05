@@ -21,4 +21,7 @@ projectRouter.delete('/:id', projectController.deleteProject);
 //firebase
 projectRouter.post('/add', projectController.createFirebaseProject);
 
+projectRouter.post('/all', projectController.getProjectList);
+
+
 module.exports = projectRouter;

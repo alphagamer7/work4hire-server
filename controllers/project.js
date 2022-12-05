@@ -275,3 +275,36 @@ exports.createFirebaseProject = async (req, res) => {
     return res.status(500).json({ err, message: err.toString() });
   }
 }
+
+exports.getProjectList = async (req, res) => {
+  try {
+    const db = admin.firestore();
+    db.collection("jobs").get()
+    .then((querySnapshot) => {
+      let jobs = [];
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            let job = {
+              id: doc.id,
+              data: doc.data()
+            }
+            jobs.push(job)
+        });
+        return res.status(200).json({
+          status: true,
+          jobs
+        });
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+  } catch (err) {
+    logger.error({
+      message: 'Error on Projects.controller (getProjectList):',
+      error: err,
+    });
+    console.log("error came here");
+    return res.status(500).json({ err, message: err.toString() });
+  }
+}
