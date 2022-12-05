@@ -9,7 +9,7 @@ const userRouter = express.Router();
 userRouter.post('/', userController.createUser);
 
 // Create user : POST
-userRouter.post('/login', userController.Login); 
+userRouter.post('/login', userController.Login);
 
 // // Read user : GET
 // userRouter.get('/:id', userController.getUser);
