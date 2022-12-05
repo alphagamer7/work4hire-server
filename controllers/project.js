@@ -287,10 +287,7 @@ exports.getProjectList = async (req, res) => {
             console.log(doc.id, " => ", doc.data());
             let jobDetails = doc.data();
             jobDetails['projectId'] = doc.id;
-            let job = {
-              data: jobDetails
-            }
-            jobs.push(job)
+            jobs.push(jobDetails)
         });
         return res.status(200).json({
           status: true,
