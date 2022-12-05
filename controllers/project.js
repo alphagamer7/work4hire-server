@@ -1,6 +1,16 @@
 const logger = require('../utils/logger');
 const Project = require('../models/project');
 
+const admin = require("firebase-admin");
+const firebase = require("firebase");
+const serviceAccount = require("./work4hire-8a56a-firebase-adminsdk-mt8sw-4aa7a2ff05");
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: "work4hire-8a56a.appspot.com"
+});
+
 exports.createProjectOld = async (req, res) => {
   // Make a copy of the req.body
   let data = { ...req.body };
@@ -240,3 +250,33 @@ exports.deleteProject = async (req, res) => {
     return res.status(500).json({ err, message: err.toString() });
   }
 };
+
+exports.createFirebaseProject = async (req, res) => {
+
+  const {title, category, description,image,latitude,longitude} = req.body;
+
+  try {
+    // Find By Id
+    let job = {
+      title,
+      category,
+      description,
+      image,
+      latitude,
+      longitude
+    }
+    const db = admin.firestore();
+    db.collection("jobs").add(job).then(()=>{
+      return res.status(200).json({
+        status: true,
+        job
+      });
+    })
+  } catch (err) {
+    logger.error({
+      message: 'Error on Projects.controller (readProject):',
+      error: err,
+    });
+    return res.status(500).json({ err, message: err.toString() });
+  }
+}
