@@ -278,12 +278,12 @@ exports.createFirebaseProject = async (req, res) => {
 
 exports.getProjectList = async (req, res) => {
   try {
+    const {email} = req.body;
     const db = admin.firestore();
-    db.collection("jobs").get()
+    db.collection("jobs").where("email", "==", email).get()
     .then((querySnapshot) => {
       let jobs = [];
         querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
             let jobDetails = doc.data();
             jobDetails['projectId'] = doc.id;

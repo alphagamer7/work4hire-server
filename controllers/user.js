@@ -88,26 +88,26 @@ exports.createUser = async (req, res) => {
   }
 };
 
-// const login = async (request, response) => {
-//   try {
-//     const { email, password } = request.body;
+const sqllogin = async (request, response) => {
+  try {
+    const { email, password } = request.body;
 
-//     const data = await firebase
-//       .auth()
-//       .signInWithEmailAndPassword(email, password);
+    const data = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
 
-//     const token = await data.user.getIdToken();
+    const token = await data.user.getIdToken();
 
-//     const user = await admin.auth().getUser(data.user.uid);
+    const user = await admin.auth().getUser(data.user.uid);
 
-//     const refreshToken = data.user.toJSON()?.stsTokenManager?.refreshToken;
+    const refreshToken = data.user.toJSON()?.stsTokenManager?.refreshToken;
 
-//     return response.status(200).json({ token, user, refreshToken });
-//   } catch (error) {
-//     console.log(error);
-//     return response.status(500).json({ error, message: error.toString() });
-//   }
-// };
+    return response.status(200).json({ token, user, refreshToken });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error, message: error.toString() });
+  }
+};
 
 exports.Login = async (request, response) => {
     try {
@@ -122,7 +122,7 @@ exports.Login = async (request, response) => {
           console.log("Document data:", userDetails);
         }
         console.log("user data", userDetails);
-        return response.status(200).json({ user: userDetails });
+        return response.status(200).json({ success: true, user: userDetails });
     })
     .catch((error) => {
         console.error("Error writing document: ", error);
@@ -219,6 +219,23 @@ exports.Login = async (request, response) => {
 //     return res.status(500).json({ err, message: err.toString() });
 //   }
 // };
+
+exports.updateUserFb = async (req, res) => {
+  const { email, firstName, lastName, image } = req.body;
+  const db = admin.firestore();
+  let userRecord = {
+      firstName,
+      lastName,
+      image,
+      status: 1,
+      editedDate: Date.now()
+  };
+
+  db.collection("users").doc(email).set(userRecord)
+  .then(() => {
+    return response.status(200).json({ success: true });
+  })
+}
 
 // exports.deleteUser = async (req, res) => {
 //   // Params
