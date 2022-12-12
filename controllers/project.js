@@ -245,7 +245,7 @@ exports.deleteProject = async (req, res) => {
 
 exports.createFirebaseProject = async (req, res) => {
 
-  const {title, category, description,image,latitude,longitude} = req.body;
+  const {title, category, description,image,latitude,longitude, email} = req.body;
 
   try {
     // Find By Id
@@ -258,7 +258,8 @@ exports.createFirebaseProject = async (req, res) => {
       longitude,
       status: 1,
       createdDate: Date.now(),
-      editedDate: Date.now()
+      editedDate: Date.now(),
+      user
     }
     const db = admin.firestore();
     db.collection("jobs").add(job).then(()=>{
@@ -280,7 +281,7 @@ exports.getProjectList = async (req, res) => {
   try {
     const {email} = req.body;
     const db = admin.firestore();
-    db.collection("jobs").where("email", "==", email).get()
+    db.collection("jobs").where("user", "==", email).orderBy("createdDate","desc").get()
     .then((querySnapshot) => {
       let jobs = [];
         querySnapshot.forEach((doc) => {
