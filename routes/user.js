@@ -11,6 +11,7 @@ userRouter.post('/', userController.createUser);
 // Create user : POST
 userRouter.post('/login', userController.Login);
 
+userRouter.post("/update", userController.updateUserFb);
 // // Read user : GET
 // userRouter.get('/:id', userController.getUser);
 // userRouter.get('/', userController.getUsers);
