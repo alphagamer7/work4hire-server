@@ -281,7 +281,7 @@ exports.getProjectList = async (req, res) => {
   try {
     const {email} = req.body;
     const db = admin.firestore();
-    db.collection("jobs").where("user", "==", email).orderBy("createdDate","desc").get()
+    db.collection("jobs").orderBy("createdDate","desc").get()
     .then((querySnapshot) => {
       let jobs = [];
         querySnapshot.forEach((doc) => {
