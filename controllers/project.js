@@ -259,7 +259,7 @@ exports.createFirebaseProject = async (req, res) => {
       status: 1,
       createdDate: Date.now(),
       editedDate: Date.now(),
-      user
+      user: email
     }
     const db = admin.firestore();
     db.collection("jobs").add(job).then(()=>{
@@ -279,7 +279,7 @@ exports.createFirebaseProject = async (req, res) => {
 
 exports.getProjectList = async (req, res) => {
   try {
-    const {email} = req.body;
+    const { email } = req.body;
     const db = admin.firestore();
     db.collection("jobs").orderBy("createdDate","desc").get()
     .then((querySnapshot) => {
